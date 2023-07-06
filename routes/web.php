@@ -1,24 +1,31 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\EmployeeController;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
-Route::get('profile', ProfileController::class)->name('profile');
-Route::get('home', [HomeController::class, 'index'])->name('home');
-Route::resource('employees', EmployeeController::class);
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\Auth\LoginController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
 |
 | Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "web" middleware group. Make something great!
 |
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
+Route::get('home', [HomeController::class, 'index'])->name('home');
+Route::resource('employees', EmployeeController::class);
+Route::get('profile', ProfileController::class)->name('profile');
 
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::post('/login', [LoginController::class, 'authenticate']);
